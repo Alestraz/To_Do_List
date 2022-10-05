@@ -1,0 +1,28 @@
+<?php
+
+if (isset($_POST['title'])) {
+    require "../db_connect.php";
+
+    $title = $_POST['title'];
+
+    echo $title;
+
+    //checking if empty
+    if (empty($title)) {
+        header("Location: ../index.php?mess=error");
+    } else {
+        $stmt = $conn->prepare("INSERT INTO todos(title) VALUE (?)");
+        $red = $stmt->execute([$title]);
+
+        if ($res) {
+            header("Location: ../index.php?mess=ok");
+        } else {
+            header("Location: ../index.php");
+        }
+
+        $conn = null;
+        exit();
+    }
+} else {
+    header("Location: ../index.php?mess=error");
+}
